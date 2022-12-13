@@ -27,10 +27,10 @@ public class ProductService {
     }
 
     public Product save(Product product) {
-        if (product.getActive() == null) {
+        try {
+            boolean value = product.getActive();
+        } catch (NullPointerException e) {
             product.setActive(false);
-        } else {
-            product.setActive(product.getActive());
         }
         return productRepository.save(product);
     }
