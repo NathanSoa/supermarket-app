@@ -6,8 +6,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.util.Set;
-
 @Entity
 public class Product {
 
@@ -16,12 +14,14 @@ public class Product {
     private Long id;
 
     @Lob
-    @NotNull(message = "You should provide at least 1 photo!")
-    private Set<Byte> photos;
+    @NotNull(message = "Photo cannot be null!")
+    private Byte[] photo;
 
-    @Size(min = 20)
+    @Size(min = 10)
     @NotBlank(message = "Message cannot be null!")
     private String description;
+
+    private Boolean active;
 
     public Long getId() {
         return id;
@@ -31,12 +31,12 @@ public class Product {
         this.id = id;
     }
 
-    public Set<Byte> getPhotos() {
-        return photos;
+    public Byte[] getPhoto() {
+        return photo;
     }
 
-    public void setPhotos(Set<Byte> photos) {
-        this.photos = photos;
+    public void setPhoto(Byte[] photo) {
+        this.photo = photo;
     }
 
     public String getDescription() {
@@ -45,5 +45,13 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
