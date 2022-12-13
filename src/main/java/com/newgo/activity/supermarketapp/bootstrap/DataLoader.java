@@ -3,12 +3,12 @@ package com.newgo.activity.supermarketapp.bootstrap;
 import com.newgo.activity.supermarketapp.domain.Product;
 import com.newgo.activity.supermarketapp.domain.Role;
 import com.newgo.activity.supermarketapp.domain.User;
-import com.newgo.activity.supermarketapp.repository.ProductRepository;
 import com.newgo.activity.supermarketapp.repository.UserRepository;
+import com.newgo.activity.supermarketapp.service.ProductService;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.nio.file.Files;
 
@@ -16,11 +16,11 @@ import java.nio.file.Files;
 public class DataLoader implements CommandLineRunner {
 
     private final UserRepository userRepository;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
-    public DataLoader(UserRepository userRepository, ProductRepository productRepository) {
+    public DataLoader(UserRepository userRepository, ProductService productService) {
         this.userRepository = userRepository;
-        this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     @Override
@@ -32,8 +32,6 @@ public class DataLoader implements CommandLineRunner {
 
         userRepository.save(user);
 
-        System.out.println("Loaded first user");
-
         User user2 = new User();
         user2.setUsername("username2");
         user2.setPassword("password2");
@@ -41,10 +39,7 @@ public class DataLoader implements CommandLineRunner {
 
         userRepository.save(user2);
 
-        System.out.println("Loaded second user");
-
         File file = new File("src/main/resources/static/images/coconut.jpg");
-        System.out.println(file.getAbsolutePath());
 
         byte[] byteArray = Files.readAllBytes(file.toPath());
         Byte[] wrapByteArray = new Byte[byteArray.length];
@@ -53,9 +48,26 @@ public class DataLoader implements CommandLineRunner {
             wrapByteArray[i] = byteArray[i];
 
         Product product = new Product();
+        product.setName("First Product");
         product.setDescription("This is my new product by the way");
         product.setPhoto(wrapByteArray);
 
-        productRepository.save(product);
+        productService.save(product);
+
+        Product product2 = new Product();
+        product2.setName("Second Product");
+        product2.setDescription("This is my second product by the way");
+        product2.setPhoto(wrapByteArray);
+        product2.setActive(true);
+
+        productService.save(product2);
+
+        Product product3 = new Product();
+        product3.setName("Third Product");
+        product3.setDescription("This is my third product by the way");
+        product3.setPhoto(wrapByteArray);
+        product3.setActive(false);
+
+        productService.save(product3);
     }
 }
