@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@RequestParam("photo") @Valid Product product){
+    public ResponseEntity<Product> save(@Valid @RequestBody Product product){
         Product savedProduct = productService.save(product);
         return ResponseEntity.ok(savedProduct);
     }
