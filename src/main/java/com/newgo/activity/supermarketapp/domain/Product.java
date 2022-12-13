@@ -3,7 +3,6 @@ package com.newgo.activity.supermarketapp.domain;
 import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -13,8 +12,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 3)
+    @NotBlank(message = "Name cannot be null!")
+    private String name;
+
     @Lob
-    @NotNull(message = "Photo cannot be null!")
     private Byte[] photo;
 
     @Size(min = 10)
@@ -29,6 +31,14 @@ public class Product {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Byte[] getPhoto() {
