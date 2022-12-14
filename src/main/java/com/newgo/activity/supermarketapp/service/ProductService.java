@@ -1,11 +1,13 @@
 package com.newgo.activity.supermarketapp.service;
 
+import com.newgo.activity.supermarketapp.utils.BeanCopyNonNullProperty;
 import com.newgo.activity.supermarketapp.domain.Product;
 import com.newgo.activity.supermarketapp.domain.dto.ProductDTO;
 import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +36,14 @@ public class ProductService {
                     .collect(Collectors.toSet());
     }
 
+    public List<ProductDTO> findAllFiltered(ProductFilter productFilter) {
+        return productRepository.findAllFiltered(productFilter)
+                .stream()
+                .map(each -> modelMapper.map(each, ProductDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public ProductDTO save(Product product) {
         try {
             boolean value = product.getActive();
@@ -43,11 +53,15 @@ public class ProductService {
         return modelMapper.map(productRepository.save(product), ProductDTO.class);
     }
 
-    public List<ProductDTO> findAllFiltered(ProductFilter productFilter) {
-        return productRepository.findAllFiltered(productFilter)
-                    .stream()
-                    .map(each -> modelMapper.map(each, ProductDTO.class))
-                    .collect(Collectors.toList());
-    }
+    @Transactional
+    public ProductDTO update(Product product, Long id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
 
+        if(!optionalProduct.isPresent())
+            return null;
+
+        Product databaseProduct = optionalProduct.get();
+        BeanCopyNonNullProperty.execute(product, databaseProduct);
+        return modelMapper.map(productRepository.save(databaseProduct), ProductDTO.class);
+    }
 }
