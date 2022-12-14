@@ -1,12 +1,11 @@
 package com.newgo.activity.supermarketapp.service;
 
 import com.newgo.activity.supermarketapp.domain.Product;
+import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -34,4 +33,9 @@ public class ProductService {
         }
         return productRepository.save(product);
     }
+
+    public List<Product> findAllFiltered(ProductFilter productFilter) {
+        return new ArrayList<>(productRepository.findAllFiltered(productFilter));
+    }
+
 }
