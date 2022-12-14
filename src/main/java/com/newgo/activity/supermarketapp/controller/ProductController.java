@@ -1,6 +1,7 @@
 package com.newgo.activity.supermarketapp.controller;
 
 import com.newgo.activity.supermarketapp.domain.Product;
+import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.service.ProductService;
 
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @CrossOrigin
@@ -24,13 +28,19 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<Product> findById(@PathVariable Long id) {
         Product product = productService.findById(id);
-        return product == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(product);
+        return Objects.isNull(product) ? ResponseEntity.notFound().build() : ResponseEntity.ok(product);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Set<Product> findAll(){
         return productService.findAll();
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Set<Product>> findAllFiltered(@RequestBody ProductFilter productFilter) {
+        List<Product> list = productService.findAllFiltered(productFilter);
+        return list.size() < 1 ? ResponseEntity.notFound().build() : ResponseEntity.ok(new HashSet<>(list));
     }
 
     @PostMapping
