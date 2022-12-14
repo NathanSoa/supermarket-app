@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 
 @Component
@@ -51,6 +52,7 @@ public class DataLoader implements CommandLineRunner {
         product.setName("First Product");
         product.setDescription("This is my new product by the way");
         product.setPhoto(wrapByteArray);
+        product.setPrice(BigDecimal.valueOf(10L));
 
         productService.save(product);
 
@@ -58,6 +60,7 @@ public class DataLoader implements CommandLineRunner {
         product2.setName("Second Product");
         product2.setDescription("This is my second product by the way");
         product2.setPhoto(wrapByteArray);
+        product2.setPrice(BigDecimal.valueOf(20L));
         product2.setActive(true);
 
         productService.save(product2);
@@ -66,6 +69,7 @@ public class DataLoader implements CommandLineRunner {
         product3.setName("Third Product");
         product3.setDescription("This is my third product by the way");
         product3.setPhoto(wrapByteArray);
+        product3.setPrice(BigDecimal.valueOf(30L));
         product3.setActive(false);
 
         productService.save(product3);

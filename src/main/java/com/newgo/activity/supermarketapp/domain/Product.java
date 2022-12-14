@@ -3,7 +3,9 @@ package com.newgo.activity.supermarketapp.domain;
 import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +27,8 @@ public class Product {
     private String description;
 
     private Boolean active;
+    @NotNull
+    private BigDecimal price;
 
     public Long getId() {
         return id;
@@ -64,6 +68,14 @@ public class Product {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override

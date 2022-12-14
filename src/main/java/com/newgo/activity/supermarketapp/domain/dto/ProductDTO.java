@@ -1,10 +1,13 @@
 package com.newgo.activity.supermarketapp.domain.dto;
 
+import java.math.BigDecimal;
+
 public class ProductDTO {
 
     private String name;
     private String description;
     private Boolean active;
+    private BigDecimal price;
     private String photo;
 
     public String getName() {
@@ -29,6 +32,14 @@ public class ProductDTO {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getPhoto() {
