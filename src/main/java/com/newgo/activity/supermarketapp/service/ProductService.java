@@ -64,4 +64,8 @@ public class ProductService {
         BeanCopyNonNullProperty.execute(product, databaseProduct);
         return modelMapper.map(productRepository.save(databaseProduct), ProductDTO.class);
     }
+
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
 }

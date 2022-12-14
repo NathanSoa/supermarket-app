@@ -55,4 +55,10 @@ public class ProductController {
         ProductDTO updatedProduct = productService.update(product, id);
         return updatedProduct == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(updatedProduct);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) {
+        productService.deleteById(id);
+    }
 }
