@@ -1,6 +1,7 @@
 package com.newgo.activity.supermarketapp.controller;
 
 import com.newgo.activity.supermarketapp.domain.Product;
+import com.newgo.activity.supermarketapp.domain.dto.ProductDTO;
 import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.service.ProductService;
 
@@ -26,26 +27,26 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id) {
-        Product product = productService.findById(id);
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+        ProductDTO product = productService.findById(id);
         return Objects.isNull(product) ? ResponseEntity.notFound().build() : ResponseEntity.ok(product);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<Product> findAll(){
+    public Set<ProductDTO> findAll(){
         return productService.findAll();
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Set<Product>> findAllFiltered(@RequestBody ProductFilter productFilter) {
-        List<Product> list = productService.findAllFiltered(productFilter);
+    public ResponseEntity<Set<ProductDTO>> findAllFiltered(@RequestBody ProductFilter productFilter) {
+        List<ProductDTO> list = productService.findAllFiltered(productFilter);
         return list.size() < 1 ? ResponseEntity.notFound().build() : ResponseEntity.ok(new HashSet<>(list));
     }
 
     @PostMapping
-    public ResponseEntity<Product> save(@Valid @RequestBody Product product){
-        Product savedProduct = productService.save(product);
+    public ResponseEntity<ProductDTO> save(@Valid @RequestBody Product product){
+        ProductDTO savedProduct = productService.save(product);
         return ResponseEntity.ok(savedProduct);
     }
 }
