@@ -29,13 +29,9 @@ public class BeanCopyNonNullProperty {
                     }
                 })
                 .map(each -> each.getName().replace("get", ""))
+                .map(String::toLowerCase)
                 .collect(Collectors.toList()));
 
-
-        nullPropertiesNames = nullPropertiesNames
-                .stream()
-                .map(String::toLowerCase)
-                .collect(Collectors.toList());
         return nullPropertiesNames.toArray(new String[nullPropertiesNames.size()]);
     }
 }
