@@ -49,4 +49,10 @@ public class ProductController {
         ProductDTO savedProduct = productService.save(product);
         return ResponseEntity.ok(savedProduct);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> update(@RequestBody Product product, @PathVariable Long id) {
+        ProductDTO updatedProduct = productService.update(product, id);
+        return updatedProduct == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(updatedProduct);
+    }
 }
