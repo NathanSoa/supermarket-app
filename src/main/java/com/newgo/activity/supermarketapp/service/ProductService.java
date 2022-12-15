@@ -2,10 +2,12 @@ package com.newgo.activity.supermarketapp.service;
 
 import com.newgo.activity.supermarketapp.utils.BeanCopyNonNullProperty;
 import com.newgo.activity.supermarketapp.domain.Product;
-import com.newgo.activity.supermarketapp.domain.dto.ProductDTO;
+import com.newgo.activity.supermarketapp.entities.dto.ProductDTO;
 import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.repository.ProductRepository;
+
 import org.modelmapper.ModelMapper;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +52,7 @@ public class ProductService {
         } catch (NullPointerException e) {
             product.setActive(false);
         }
+        product.setId(null);
         return modelMapper.map(productRepository.save(product), ProductDTO.class);
     }
 
