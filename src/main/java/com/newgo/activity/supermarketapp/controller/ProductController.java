@@ -1,7 +1,7 @@
 package com.newgo.activity.supermarketapp.controller;
 
 import com.newgo.activity.supermarketapp.domain.Product;
-import com.newgo.activity.supermarketapp.domain.dto.ProductDTO;
+import com.newgo.activity.supermarketapp.entities.dto.ProductDTO;
 import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.service.ProductService;
 
