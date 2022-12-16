@@ -1,8 +1,10 @@
 package com.newgo.activity.supermarketapp.config;
 
 import com.newgo.activity.supermarketapp.domain.Product;
+import com.newgo.activity.supermarketapp.domain.ProductItem;
 import com.newgo.activity.supermarketapp.entities.dto.ProductDTO;
 
+import com.newgo.activity.supermarketapp.entities.dto.ProductItemDTO;
 import com.newgo.activity.supermarketapp.utils.JwtTokenUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -31,6 +33,15 @@ public class BeanConfig {
                 .addMappings(src -> {
                     src.using(byteCodeToString64);
                     src.map(Product::getPhoto, ProductDTO::setPhoto);
+                });
+
+        modelMapper.typeMap(ProductItem.class, ProductItemDTO.class)
+                .addMappings(src -> {
+                    src.using(byteCodeToString64);
+                    src.map(source -> source.getProduct().getPhoto(), ProductItemDTO::setPhoto);
+                    src.map(source -> source.getProduct().getName(), ProductItemDTO::setName);
+                    src.map(source -> source.getProduct().getPrice(), ProductItemDTO::setPrice);
+                    src.map(source -> source.getProduct().getDescription(), ProductItemDTO::setDescription);
                 });
 
         return modelMapper;
