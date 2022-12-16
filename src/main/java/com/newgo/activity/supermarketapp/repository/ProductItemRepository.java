@@ -11,4 +11,5 @@ import java.util.List;
 public interface ProductItemRepository extends JpaRepository<ProductItem, Long> {
 
     List<ProductItem> findAllByUser(User user);
+    void deleteAllByUser(User user);
 }

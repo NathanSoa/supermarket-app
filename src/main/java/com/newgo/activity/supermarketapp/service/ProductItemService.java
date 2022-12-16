@@ -38,4 +38,13 @@ public class ProductItemService {
                 .map(each -> modelMapper.map(each, ProductItemDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public void deleteList(String name) {
+        Optional<User> optionalUser = userRepository.findByUsername(name);
+
+        if(!optionalUser.isPresent())
+            return;
+
+        productItemRepository.deleteAllByUser(optionalUser.get());
+    }
 }
