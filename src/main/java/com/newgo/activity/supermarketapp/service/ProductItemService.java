@@ -3,13 +3,13 @@ package com.newgo.activity.supermarketapp.service;
 import com.newgo.activity.supermarketapp.domain.Product;
 import com.newgo.activity.supermarketapp.domain.ProductItem;
 import com.newgo.activity.supermarketapp.domain.User;
-import com.newgo.activity.supermarketapp.entities.ProductDTO;
 import com.newgo.activity.supermarketapp.entities.ProductItemDTO;
-import com.newgo.activity.supermarketapp.entities.ProductItemInputDTO;
+import com.newgo.activity.supermarketapp.entities.ProductItemRequest;
 import com.newgo.activity.supermarketapp.repository.ProductItemRepository;
 import com.newgo.activity.supermarketapp.repository.ProductRepository;
 import com.newgo.activity.supermarketapp.repository.UserRepository;
 
+import com.newgo.activity.supermarketapp.utils.BeanCopyNonNullProperty;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.stereotype.Service;
@@ -44,15 +44,9 @@ public class ProductItemService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteList(String name) {
+    public ProductItem addProduct(String name, ProductItemRequest productItemRequest) {
         User user = userRepository.findByUsername(name).get();
-
-        productItemRepository.deleteAllByUser(user);
-    }
-
-    public ProductItem addProduct(String name, ProductItemInputDTO productInputDTO) {
-        User user = userRepository.findByUsername(name).get();
-        Optional<Product> optionalProduct = productRepository.findByName(productInputDTO.getName());
+        Optional<Product> optionalProduct = productRepository.findByName(productItemRequest.getName());
 
         if(!optionalProduct.isPresent())
             return null;
@@ -64,9 +58,37 @@ public class ProductItemService {
         ProductItem productItem = new ProductItem();
         productItem.setProduct(optionalProduct.get());
         productItem.setUser(user);
-        productItem.setQuantity(productInputDTO.getQuantity());
+        productItem.setQuantity(productItemRequest.getQuantity());
 
         return productItemRepository.save(productItem);
+    }
+
+    public ProductItem changeQuantity(String name, ProductItemRequest productItemRequest) {
+        User user = userRepository.findByUsername(name).get();
+        Optional<Product> optionalProduct = productRepository.findByName(productItemRequest.getName());
+
+        if(!optionalProduct.isPresent())
+            return null;
+
+        Optional<ProductItem> optionalProductItem = productItemRepository.findByProductAndUser(optionalProduct.get(), user);
+
+        if(!optionalProductItem.isPresent())
+            return null;
+
+        ProductItem databaseProductItem = optionalProductItem.get();
+
+        ProductItem productItem = new ProductItem();
+        productItem.setQuantity(productItemRequest.getQuantity());
+
+        BeanCopyNonNullProperty.execute(productItem, databaseProductItem);
+
+        return productItemRepository.save(databaseProductItem);
+    }
+
+    public void deleteList(String name) {
+        User user = userRepository.findByUsername(name).get();
+
+        productItemRepository.deleteAllByUser(user);
     }
 
     public void deleteProduct(String name, Long id) {

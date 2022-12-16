@@ -2,7 +2,7 @@ package com.newgo.activity.supermarketapp.controller;
 
 import com.newgo.activity.supermarketapp.domain.ProductItem;
 import com.newgo.activity.supermarketapp.entities.ProductItemDTO;
-import com.newgo.activity.supermarketapp.entities.ProductItemInputDTO;
+import com.newgo.activity.supermarketapp.entities.ProductItemRequest;
 import com.newgo.activity.supermarketapp.service.ProductItemService;
 
 import org.springframework.http.HttpStatus;
@@ -33,24 +33,35 @@ public class ProductItemController {
         return ResponseEntity.ok(productItemService.findAll(principal.getName()));
     }
 
-    @PostMapping
+
     @Transactional
-    public ResponseEntity<?> addProduct(Principal principal, @Valid @RequestBody ProductItemInputDTO productInputDTO) {
-        ProductItem productItem = productItemService.addProduct(principal.getName(), productInputDTO);
+    @PostMapping
+    public ResponseEntity<?> addProduct(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
+        ProductItem productItem = productItemService.addProduct(principal.getName(), productItemRequest);
         return Objects.isNull(productItem) ? ResponseEntity.badRequest().build() : ResponseEntity.ok(productItem.getProduct().getName() + " was added to your list");
     }
 
-    @DeleteMapping
+
     @Transactional
+    @PutMapping("/product")
+    public ResponseEntity<?> changeQuantity(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
+        ProductItem productItem = productItemService.changeQuantity(principal.getName(), productItemRequest);
+        return Objects.isNull(productItem) ? ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
+    }
+
+
+    @Transactional
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteList(Principal principal) {
         productItemService.deleteList(principal.getName());
     }
 
-    @DeleteMapping("/{id}/product")
+
     @Transactional
+    @DeleteMapping("/{id}/product")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteList(Principal principal, @PathVariable Long id) {
+    public void deleteProduct(Principal principal, @PathVariable Long id) {
         productItemService.deleteProduct(principal.getName(), id);
     }
 }
