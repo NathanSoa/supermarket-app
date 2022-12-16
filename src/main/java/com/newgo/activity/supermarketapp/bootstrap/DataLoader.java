@@ -2,43 +2,74 @@ package com.newgo.activity.supermarketapp.bootstrap;
 
 import com.newgo.activity.supermarketapp.domain.Product;
 import com.newgo.activity.supermarketapp.domain.Role;
+import com.newgo.activity.supermarketapp.domain.RoleName;
 import com.newgo.activity.supermarketapp.domain.User;
+import com.newgo.activity.supermarketapp.repository.RoleRepository;
 import com.newgo.activity.supermarketapp.repository.UserRepository;
 import com.newgo.activity.supermarketapp.service.ProductService;
 
 import org.springframework.boot.CommandLineRunner;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
+
 import java.math.BigDecimal;
+
 import java.nio.file.Files;
+
+import java.util.HashSet;
 
 @Component
 public class DataLoader implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final ProductService productService;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
 
-    public DataLoader(UserRepository userRepository, ProductService productService) {
+    public DataLoader(UserRepository userRepository, ProductService productService, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.productService = productService;
+        this.roleRepository = roleRepository;
+        this.encoder = encoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
+
+        if(dataNotLoaded())
+            loadData();
+    }
+
+    private boolean dataNotLoaded() {
+        return roleRepository.count() == 0;
+    }
+    private void loadData() throws IOException {
+        Role userRole = new Role();
+        userRole.setRoleName(RoleName.ROLE_USER);
+        userRole = roleRepository.save(userRole);
+
+        Role adminRole = new Role();
+        adminRole.setRoleName(RoleName.ROLE_ADMINISTRATOR);
+        adminRole = roleRepository.save(adminRole);
+
         User user = new User();
         user.setUsername("username");
-        user.setPassword("password");
-        user.setRole(Role.USER);
-
+        user.setPassword(encoder.encode("password"));
+        user.setRoles(new HashSet<>());
+        user.getRoles().add(userRole);
         userRepository.save(user);
 
-        User user2 = new User();
-        user2.setUsername("username2");
-        user2.setPassword("password2");
-        user2.setRole(Role.ADMINISTRATOR);
-
-        userRepository.save(user2);
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(encoder.encode("adminPassword"));
+        admin.setRoles(new HashSet<>());
+        admin.getRoles().add(adminRole);
+        userRepository.save(admin);
 
         File file = new File("src/main/resources/static/images/coconut.jpg");
 
