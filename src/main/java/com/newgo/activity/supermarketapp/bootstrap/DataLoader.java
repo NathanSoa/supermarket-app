@@ -1,9 +1,8 @@
 package com.newgo.activity.supermarketapp.bootstrap;
 
-import com.newgo.activity.supermarketapp.domain.Product;
-import com.newgo.activity.supermarketapp.domain.Role;
-import com.newgo.activity.supermarketapp.domain.RoleName;
-import com.newgo.activity.supermarketapp.domain.User;
+import com.newgo.activity.supermarketapp.domain.*;
+import com.newgo.activity.supermarketapp.repository.ProductItemRepository;
+import com.newgo.activity.supermarketapp.repository.ProductRepository;
 import com.newgo.activity.supermarketapp.repository.RoleRepository;
 import com.newgo.activity.supermarketapp.repository.UserRepository;
 import com.newgo.activity.supermarketapp.service.ProductService;
@@ -27,14 +26,18 @@ import java.util.HashSet;
 public class DataLoader implements CommandLineRunner {
 
     private final UserRepository userRepository;
-    private final ProductService productService;
     private final RoleRepository roleRepository;
+    private final ProductRepository productRepository;
+    private final ProductItemRepository productItemRepository;
+    private final ProductService productService;
     private final PasswordEncoder encoder;
 
-    public DataLoader(UserRepository userRepository, ProductService productService, RoleRepository roleRepository, PasswordEncoder encoder) {
+    public DataLoader(UserRepository userRepository, ProductService productService, RoleRepository roleRepository, ProductRepository productRepository, ProductItemRepository productItemRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.productService = productService;
         this.roleRepository = roleRepository;
+        this.productRepository = productRepository;
+        this.productItemRepository = productItemRepository;
         this.encoder = encoder;
     }
 
@@ -62,14 +65,14 @@ public class DataLoader implements CommandLineRunner {
         user.setPassword(encoder.encode("password"));
         user.setRoles(new HashSet<>());
         user.getRoles().add(userRole);
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         User admin = new User();
         admin.setUsername("admin");
         admin.setPassword(encoder.encode("adminPassword"));
         admin.setRoles(new HashSet<>());
         admin.getRoles().add(adminRole);
-        userRepository.save(admin);
+        admin = userRepository.save(admin);
 
         File file = new File("src/main/resources/static/images/coconut.jpg");
 
@@ -104,5 +107,12 @@ public class DataLoader implements CommandLineRunner {
         product3.setActive(false);
 
         productService.save(product3);
+
+        ProductItem productItem = new ProductItem();
+        productItem.setProduct(productRepository.findById(1L).get());
+        productItem.setUser(user);
+        productItem.setQuantity(10);
+
+        productItemRepository.save(productItem);
     }
 }
