@@ -29,9 +29,16 @@ public class BeanCopyNonNullProperty {
                     }
                 })
                 .map(each -> each.getName().replace("get", ""))
-                .map(String::toLowerCase)
+                .map(each -> each.substring(0, 1).toLowerCase() + each.substring(1))
                 .collect(Collectors.toList()));
 
+        if(arrayDoesNotHaveId(nullPropertiesNames))
+            nullPropertiesNames.add("id");
+
         return nullPropertiesNames.toArray(new String[nullPropertiesNames.size()]);
+    }
+
+    private static boolean arrayDoesNotHaveId(List<String> nullPropertiesNames) {
+        return !nullPropertiesNames.contains("id");
     }
 }
