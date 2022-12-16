@@ -1,10 +1,12 @@
 package com.newgo.activity.supermarketapp.config.security;
-
 import com.newgo.activity.supermarketapp.domain.RoleName;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +32,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    @Primary
+    @Profile("api")
+    public SecurityFilterChain configureAPI(HttpSecurity http) throws Exception {
         http.csrf()
                 .disable()
                 .authorizeRequests()
@@ -48,6 +52,26 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    @Profile("thymeleaf")
+    public SecurityFilterChain configureThymeleaf(HttpSecurity http) throws Exception {
+        http
+            .formLogin()
+            .loginPage("/login")
+            .failureUrl("/login-error")
+            .defaultSuccessUrl("/success");
+
+        http
+                .authorizeRequests()
+                .antMatchers("/admin/**")
+                .hasAuthority(RoleName.ROLE_ADMINISTRATOR.toString())
+                .antMatchers("/user/**")
+                .hasAuthority(RoleName.ROLE_USER.toString());
+
+        return http.build();
+    }
+
 
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
