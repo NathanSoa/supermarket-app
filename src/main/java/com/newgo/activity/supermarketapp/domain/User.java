@@ -18,12 +18,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 5, max = 15, message = "Username must have more than 5 characters and less than 15!")
+    @Size(min = 5, message = "Username must have more than 5 characters!")
     @NotBlank(message = "Username cannot be null!")
     @Column(unique = true)
     private String username;
 
-    @Size(min = 8, max = 25, message = "Password must have more than 8 characters and less than 25!")
+    @Size(min = 8, message = "Password must have more than 8 characters")
     @NotBlank(message = "Password cannot be null!")
     private String password;
 
