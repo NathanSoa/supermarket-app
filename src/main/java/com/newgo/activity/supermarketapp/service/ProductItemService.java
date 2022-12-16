@@ -56,6 +56,10 @@ public class ProductItemService {
         if(!optionalProduct.isPresent())
             return null;
 
+        if(itemAlreadyInList(user, optionalProduct.get())) {
+            return null;
+        }
+
         ProductItem productItem = new ProductItem();
         productItem.setProduct(optionalProduct.get());
         productItem.setUser(user);
@@ -63,4 +67,9 @@ public class ProductItemService {
 
         return productItemRepository.save(productItem);
     }
+
+    private boolean itemAlreadyInList(User user, Product product) {
+        return productItemRepository.findByProductAndUser(product, user).isPresent();
+    }
+
 }

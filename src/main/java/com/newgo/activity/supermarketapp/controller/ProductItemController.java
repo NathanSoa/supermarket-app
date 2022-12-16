@@ -38,7 +38,7 @@ public class ProductItemController {
     @Transactional
     public ResponseEntity<?> addProduct(Principal principal, @Valid @RequestBody ProductItemInputDTO productInputDTO) {
         ProductItem productItem = productItemService.addProduct(principal.getName(), productInputDTO);
-        return Objects.isNull(productItem) ? ResponseEntity.notFound().build() : ResponseEntity.ok(productItem.getProduct().getName() + " was added to your list");
+        return Objects.isNull(productItem) ? ResponseEntity.badRequest().build() : ResponseEntity.ok(productItem.getProduct().getName() + " was added to your list");
     }
 
     @DeleteMapping
