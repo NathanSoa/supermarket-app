@@ -1,4 +1,4 @@
-package com.newgo.activity.supermarketapp.entities.dto;
+package com.newgo.activity.supermarketapp.entities;
 
 import java.math.BigDecimal;
 

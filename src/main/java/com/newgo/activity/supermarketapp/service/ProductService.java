@@ -2,7 +2,7 @@ package com.newgo.activity.supermarketapp.service;
 
 import com.newgo.activity.supermarketapp.utils.BeanCopyNonNullProperty;
 import com.newgo.activity.supermarketapp.domain.Product;
-import com.newgo.activity.supermarketapp.entities.dto.ProductDTO;
+import com.newgo.activity.supermarketapp.entities.ProductDTO;
 import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.repository.ProductRepository;
 

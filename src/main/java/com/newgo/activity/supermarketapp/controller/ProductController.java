@@ -1,7 +1,7 @@
 package com.newgo.activity.supermarketapp.controller;
 
 import com.newgo.activity.supermarketapp.domain.Product;
-import com.newgo.activity.supermarketapp.entities.dto.ProductDTO;
+import com.newgo.activity.supermarketapp.entities.ProductDTO;
 import com.newgo.activity.supermarketapp.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.service.ProductService;
 
@@ -53,7 +53,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> update(@RequestBody Product product, @PathVariable Long id) {
         ProductDTO updatedProduct = productService.update(product, id);
-        return updatedProduct == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(updatedProduct);
+        return Objects.isNull(updatedProduct) ? ResponseEntity.notFound().build() : ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("/{id}")
