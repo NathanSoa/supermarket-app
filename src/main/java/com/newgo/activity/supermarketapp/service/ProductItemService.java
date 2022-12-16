@@ -3,6 +3,7 @@ package com.newgo.activity.supermarketapp.service;
 import com.newgo.activity.supermarketapp.domain.Product;
 import com.newgo.activity.supermarketapp.domain.ProductItem;
 import com.newgo.activity.supermarketapp.domain.User;
+import com.newgo.activity.supermarketapp.entities.ProductDTO;
 import com.newgo.activity.supermarketapp.entities.ProductItemDTO;
 import com.newgo.activity.supermarketapp.entities.ProductItemInputDTO;
 import com.newgo.activity.supermarketapp.repository.ProductItemRepository;
@@ -68,8 +69,16 @@ public class ProductItemService {
         return productItemRepository.save(productItem);
     }
 
+    public void deleteProduct(String name, Long id) {
+        User user = userRepository.findByUsername(name).get();
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if(!optionalProduct.isPresent())
+            throw new RuntimeException("Cannot found any product with id " + id);
+
+        productItemRepository.deleteByProductAndUser(optionalProduct.get(), user);
+    }
     private boolean itemAlreadyInList(User user, Product product) {
         return productItemRepository.findByProductAndUser(product, user).isPresent();
     }
-
 }

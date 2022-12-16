@@ -30,7 +30,6 @@ public class ProductItemController {
 
     @GetMapping
     public ResponseEntity<List<ProductItemDTO>> findAll(Principal principal) {
-        System.out.println(principal.getName());
         return ResponseEntity.ok(productItemService.findAll(principal.getName()));
     }
 
@@ -46,5 +45,12 @@ public class ProductItemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteList(Principal principal) {
         productItemService.deleteList(principal.getName());
+    }
+
+    @DeleteMapping("/{id}/product")
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteList(Principal principal, @PathVariable Long id) {
+        productItemService.deleteProduct(principal.getName(), id);
     }
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface ProductItemRepository extends JpaRepository<ProductItem, Long> {
 
     List<ProductItem> findAllByUser(User user);
-    void deleteAllByUser(User user);
     Optional<ProductItem> findByProductAndUser(Product product, User user);
+    void deleteAllByUser(User user);
+    void deleteByProductAndUser(Product product, User user);
 }
