@@ -25,4 +25,9 @@ public class Role extends BaseEntity implements GrantedAuthority {
     public void setRoleName(RoleName roleName) {
         this.roleName = roleName;
     }
+
+    @Override
+    public String toString() {
+        return this.roleName.toString();
+    }
 }
