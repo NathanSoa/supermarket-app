@@ -12,11 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "app_user")
-public class User implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity implements UserDetails {
 
     @Size(min = 5, message = "Username must have more than 5 characters!")
     @NotBlank(message = "Username cannot be null!")
@@ -68,14 +64,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setUsername(String username) {

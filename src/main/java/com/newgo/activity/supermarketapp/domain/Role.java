@@ -6,11 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Role implements GrantedAuthority {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Role extends BaseEntity implements GrantedAuthority {
 
     @NotNull
     @Column(unique = true)
@@ -20,14 +16,6 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return getRoleName().toString();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public RoleName getRoleName() {
