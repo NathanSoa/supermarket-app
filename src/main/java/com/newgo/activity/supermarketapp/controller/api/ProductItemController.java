@@ -1,4 +1,4 @@
-package com.newgo.activity.supermarketapp.controller;
+package com.newgo.activity.supermarketapp.controller.api;
 
 import com.newgo.activity.supermarketapp.domain.ProductItem;
 import com.newgo.activity.supermarketapp.entities.ProductItemDTO;
