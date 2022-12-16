@@ -1,5 +1,6 @@
 package com.newgo.activity.supermarketapp.config.security;
 
+import com.newgo.activity.supermarketapp.domain.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Bean;
@@ -35,8 +36,10 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/login")
                 .permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/product/**")
+                .hasAuthority(RoleName.ROLE_ADMINISTRATOR.toString())
+                .antMatchers("/list/**")
+                .hasAuthority(RoleName.ROLE_USER.toString())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
