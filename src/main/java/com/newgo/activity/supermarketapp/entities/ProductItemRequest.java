@@ -2,7 +2,7 @@ package com.newgo.activity.supermarketapp.entities;
 
 import javax.validation.constraints.NotNull;
 
-public class ProductItemInputDTO {
+public class ProductItemRequest {
 
     @NotNull
     private String name;
