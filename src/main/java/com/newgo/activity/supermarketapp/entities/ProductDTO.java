@@ -2,7 +2,7 @@ package com.newgo.activity.supermarketapp.entities;
 
 import java.math.BigDecimal;
 
-public class ProductDTO {
+public class ProductDTO extends IdentifiedDTO {
 
     private String name;
     private String description;
