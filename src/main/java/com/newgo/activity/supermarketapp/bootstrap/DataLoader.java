@@ -114,5 +114,12 @@ public class DataLoader implements CommandLineRunner {
         productItem.setQuantity(10);
 
         productItemRepository.save(productItem);
+
+        ProductItem productItem2 = new ProductItem();
+        productItem2.setProduct(productRepository.findById(2L).get());
+        productItem2.setUser(user);
+        productItem2.setQuantity(12);
+
+        productItemRepository.save(productItem2);
     }
 }
