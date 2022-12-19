@@ -1,4 +1,4 @@
-package com.newgo.activity.supermarketapp.controller.thymeleaf;
+package com.newgo.activity.supermarketapp.controller.web;
 
 import com.newgo.activity.supermarketapp.domain.RoleName;
 import org.springframework.security.core.Authentication;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ThymeleafLoginController {
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/", "/index", "/login"}, method = RequestMethod.GET)
     public String login() {
         return "login";
     }
