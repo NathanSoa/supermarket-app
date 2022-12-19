@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editing a product</title>
+</head>
+<body>
+<!--/*@thymesVar id="productItemRequest" type="com.newgo.activity.supermarketapp.entities.ProductItemRequest"*/-->
+  <h1>Edit Product Page</h1>
+  <form action="#" th:action="@{'/user/product/{id}'(id=${product.id})}" th:object="${productItemRequest}" th:method="put" >
+      <label for="name">Product Name</label>
+      <input type="text" name="name" id="name" th:field="*{name}" hidden>
+      <label for="quantity" th:text="Quantity"></label>
+      <input type="text" name="quantity" id="quantity" placeholder="add new quantity" th:field="*{quantity}">
+      <button type="submit" th:text="'change quantity'"></button>
+  </form>
+</body>
+</html>
