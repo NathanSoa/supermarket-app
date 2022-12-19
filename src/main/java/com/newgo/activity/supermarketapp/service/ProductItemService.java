@@ -100,6 +100,23 @@ public class ProductItemService {
 
         productItemRepository.deleteByProductAndUser(optionalProduct.get(), user);
     }
+
+    public ProductItemDTO findByProductIdAndUser(String name, Long id) {
+        User user = userRepository.findByUsername(name).get();
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if(!optionalProduct.isPresent())
+            return null;
+
+        Optional<ProductItem> optionalProductItem = productItemRepository.findByProductAndUser(optionalProduct.get(), user);
+
+        if(!optionalProductItem.isPresent())
+            return null;
+
+        ProductItem databaseProductItem = optionalProductItem.get();
+        return modelMapper.map(databaseProductItem, ProductItemDTO.class);
+    }
+
     private boolean itemAlreadyInList(User user, Product product) {
         return productItemRepository.findByProductAndUser(product, user).isPresent();
     }
