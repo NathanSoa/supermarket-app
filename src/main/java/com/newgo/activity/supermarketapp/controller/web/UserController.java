@@ -1,5 +1,6 @@
 package com.newgo.activity.supermarketapp.controller.web;
 
+import com.newgo.activity.supermarketapp.dtos.ProductItemRequest;
 import com.newgo.activity.supermarketapp.service.ProductItemService;
 
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -45,4 +47,17 @@ public class UserController {
         model.addAttribute("products", productItemService.findAll(principal.getName()));
         return "user/list";
     }
+
+    @Transactional
+    @RequestMapping(value = "product", method = RequestMethod.PATCH)
+    public String changeQuantity(Model model, Principal principal, @RequestParam String name, @RequestParam Integer quantity) {
+        ProductItemRequest request = new ProductItemRequest();
+        request.setName(name);
+        request.setQuantity(quantity);
+        System.out.println("PUT was requested");
+        productItemService.changeQuantity(principal.getName(), request);
+        model.addAttribute("products", productItemService.findAll(principal.getName()));
+        return "user/list";
+    }
+
 }

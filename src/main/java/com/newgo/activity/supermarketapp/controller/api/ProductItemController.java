@@ -1,8 +1,8 @@
 package com.newgo.activity.supermarketapp.controller.api;
 
 import com.newgo.activity.supermarketapp.domain.ProductItem;
-import com.newgo.activity.supermarketapp.entities.ProductItemDTO;
-import com.newgo.activity.supermarketapp.entities.ProductItemRequest;
+import com.newgo.activity.supermarketapp.dtos.ProductItemDTO;
+import com.newgo.activity.supermarketapp.dtos.ProductItemRequest;
 import com.newgo.activity.supermarketapp.service.ProductItemService;
 
 import org.springframework.http.HttpStatus;

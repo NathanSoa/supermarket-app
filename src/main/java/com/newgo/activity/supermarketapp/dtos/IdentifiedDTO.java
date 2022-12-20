@@ -1,4 +1,4 @@
-package com.newgo.activity.supermarketapp.entities;
+package com.newgo.activity.supermarketapp.dtos;
 
 public abstract class IdentifiedDTO {
 
