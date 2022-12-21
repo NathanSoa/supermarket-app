@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -28,20 +25,18 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-        ProductDTO product = productService.findById(id);
-        return Objects.isNull(product) ? ResponseEntity.notFound().build() : ResponseEntity.ok(product);
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Set<ProductDTO> findAll(){
-        return productService.findAll();
+    public ResponseEntity<List<ProductDTO>> findAll(){
+        return ResponseEntity.ok(productService.findAll());
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<Set<ProductDTO>> findAllFiltered(@RequestBody ProductFilter productFilter) {
-        List<ProductDTO> list = productService.findAllFiltered(productFilter);
-        return list.size() < 1 ? ResponseEntity.notFound().build() : ResponseEntity.ok(new HashSet<>(list));
+    public ResponseEntity<List<ProductDTO>> findAllFiltered(@RequestBody ProductFilter productFilter) {
+        return ResponseEntity.ok(productService.findAllFiltered(productFilter));
     }
 
     @PostMapping
@@ -51,14 +46,20 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@RequestBody Product product, @PathVariable Long id) {
-        ProductDTO updatedProduct = productService.update(product, id);
-        return Objects.isNull(updatedProduct) ? ResponseEntity.notFound().build() : ResponseEntity.ok(updatedProduct);
+    public ResponseEntity<ProductDTO> fullyUpdate(@Valid @RequestBody Product product, @PathVariable Long id) {
+        ProductDTO updatedProduct = productService.fullyUpdate(product, id);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductDTO> partialUpdate(@RequestBody Product product, @PathVariable Long id) {
+        ProductDTO updatedProduct = productService.partialUpdate(product, id);
+        return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
         productService.deleteById(id);
+        return ResponseEntity.ok("Product with id " + id + " was deleted!");
     }
 }

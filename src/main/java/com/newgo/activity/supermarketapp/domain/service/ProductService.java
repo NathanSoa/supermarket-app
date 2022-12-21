@@ -6,8 +6,12 @@ import com.newgo.activity.supermarketapp.presentation.dtos.ProductDTO;
 import com.newgo.activity.supermarketapp.data.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.data.repository.ProductRepository;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.modelmapper.ModelMapper;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,16 +30,11 @@ public class ProductService {
         this.modelMapper = modelMapper;
     }
 
-    public ProductDTO findById(Long id) {
-        Optional<Product> productOptional = productRepository.findById(id);
-        return productOptional.isPresent() ? modelMapper.map(productOptional.get(), ProductDTO.class) : null;
-    }
-
-    public Set<ProductDTO> findAll() {
+    public List<ProductDTO> findAll() {
         return productRepository.findAll()
                     .stream()
                     .map(each -> modelMapper.map(each, ProductDTO.class))
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
     }
 
     public List<ProductDTO> findAllFiltered(ProductFilter productFilter) {
@@ -45,30 +44,51 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public ProductDTO save(Product product) {
-        try {
-            boolean value = product.getActive();
-        } catch (NullPointerException e) {
-            product.setActive(false);
-        }
-        product.setId(null);
-        return modelMapper.map(productRepository.save(product), ProductDTO.class);
+    public ProductDTO findById(Long id) {
+        Product databaseProduct = getProductOrThrowException(id);
+        return modelMapper.map(databaseProduct, ProductDTO.class);
     }
 
     @Transactional
-    public ProductDTO update(Product product, Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
+    public ProductDTO save(Product entity) {
+        if(Objects.isNull(entity.getActive()))
+            entity.setActive(false);
 
-        if(!optionalProduct.isPresent())
-            return null;
+        entity.setId(null);
+        return modelMapper.map(productRepository.save(entity), ProductDTO.class);
+    }
 
-        Product databaseProduct = optionalProduct.get();
-        BeanCopyNonNullProperty.execute(product, databaseProduct);
+    @Transactional
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void delete(Product entity) {
+        productRepository.delete(entity);
+    }
+
+    @Transactional
+    public ProductDTO fullyUpdate(Product entity, Long id) {
+        Product databaseProduct = getProductOrThrowException(id);
+        entity.setId(id);
+        BeanUtils.copyProperties(entity, databaseProduct);
         return modelMapper.map(productRepository.save(databaseProduct), ProductDTO.class);
     }
 
-    public void deleteById(Long id) {
-        productRepository.deleteById(id);
+    @Transactional
+    public ProductDTO partialUpdate(Product entity, Long id) {
+        Product databaseProduct = getProductOrThrowException(id);
+        BeanCopyNonNullProperty.execute(entity, databaseProduct);
+        return modelMapper.map(productRepository.save(databaseProduct), ProductDTO.class);
+    }
+
+    private Product getProductOrThrowException(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if(!productOptional.isPresent())
+            throw new EmptyResultDataAccessException("Cannot find any product with id "  + id, 1);
+
+        return productOptional.get();
     }
 }
