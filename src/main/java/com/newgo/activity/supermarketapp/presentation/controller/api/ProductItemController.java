@@ -5,6 +5,7 @@ import com.newgo.activity.supermarketapp.presentation.dtos.ProductItemDTO;
 import com.newgo.activity.supermarketapp.presentation.dtos.ProductItemRequest;
 import com.newgo.activity.supermarketapp.domain.service.ProductItemService;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -20,13 +21,10 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/list")
+@AllArgsConstructor
 public class ProductItemController {
 
     private final ProductItemService productItemService;
-
-    public ProductItemController(ProductItemService productItemService) {
-        this.productItemService = productItemService;
-    }
 
     @GetMapping
     public ResponseEntity<List<ProductItemDTO>> findAll(Principal principal) {
