@@ -51,6 +51,12 @@ public class ProductController {
         return ResponseEntity.ok(updatedProduct);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductDTO> partialUpdate(@RequestBody Product product, @PathVariable Long id) {
+        ProductDTO updatedProduct = productService.partialUpdate(product, id);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id) {
         productService.deleteById(id);
