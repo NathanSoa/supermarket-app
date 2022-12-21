@@ -41,9 +41,9 @@ public class SecurityConfig {
                 .antMatchers("/login")
                 .permitAll()
                 .antMatchers("/product/**")
-                .hasAuthority(RoleName.ROLE_ADMINISTRATOR.toString())
+                .hasAuthority(RoleName.ADMINISTRATOR.toString())
                 .antMatchers("/list/**")
-                .hasAuthority(RoleName.ROLE_USER.toString())
+                .hasAuthority(RoleName.USER.toString())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -65,9 +65,9 @@ public class SecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**")
-                .hasAuthority(RoleName.ROLE_ADMINISTRATOR.toString())
+                .hasAuthority(RoleName.ADMINISTRATOR.toString())
                 .antMatchers("/user/**")
-                .hasAuthority(RoleName.ROLE_USER.toString());
+                .hasAuthority(RoleName.USER.toString());
 
         return http.build();
     }

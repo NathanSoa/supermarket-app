@@ -28,9 +28,9 @@ public class ThymeleafLoginController {
     public void loginRedirect(HttpServletRequest request, HttpServletResponse response, Authentication authResult)  throws Exception {
         String roles = authResult.getAuthorities().toString();
 
-        if(roles.contains(RoleName.ROLE_USER.toString()))
+        if(roles.contains(RoleName.USER.toString()))
             response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/user/index"));
-        else if(roles.contains(RoleName.ROLE_ADMINISTRATOR.toString()))
+        else if(roles.contains(RoleName.ADMINISTRATOR.toString()))
             response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/admin/index"));
     }
 }
