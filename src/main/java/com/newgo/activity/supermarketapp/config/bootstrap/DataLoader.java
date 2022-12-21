@@ -1,7 +1,6 @@
 package com.newgo.activity.supermarketapp.config.bootstrap;
 
 import com.newgo.activity.supermarketapp.data.entities.*;
-import com.newgo.activity.supermarketapp.entities.*;
 import com.newgo.activity.supermarketapp.data.repository.ProductItemRepository;
 import com.newgo.activity.supermarketapp.data.repository.ProductRepository;
 import com.newgo.activity.supermarketapp.data.repository.RoleRepository;
