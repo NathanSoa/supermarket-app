@@ -6,6 +6,8 @@ import com.newgo.activity.supermarketapp.presentation.dtos.ProductDTO;
 import com.newgo.activity.supermarketapp.data.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.data.repository.ProductRepository;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.BeanUtils;
@@ -49,11 +51,9 @@ public class ProductService {
 
     @Transactional
     public ProductDTO save(Product entity) {
-        try {
-            boolean value = entity.getActive();
-        } catch (NullPointerException e) {
+        if(Objects.isNull(entity.getActive()))
             entity.setActive(false);
-        }
+
         entity.setId(null);
         return modelMapper.map(productRepository.save(entity), ProductDTO.class);
     }
