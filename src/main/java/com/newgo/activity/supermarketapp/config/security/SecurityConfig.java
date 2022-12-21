@@ -1,5 +1,5 @@
 package com.newgo.activity.supermarketapp.config.security;
-import com.newgo.activity.supermarketapp.domain.RoleName;
+import com.newgo.activity.supermarketapp.data.entities.RoleName;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

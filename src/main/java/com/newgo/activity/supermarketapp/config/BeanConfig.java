@@ -1,10 +1,10 @@
 package com.newgo.activity.supermarketapp.config;
 
-import com.newgo.activity.supermarketapp.domain.Product;
-import com.newgo.activity.supermarketapp.domain.ProductItem;
-import com.newgo.activity.supermarketapp.dtos.ProductDTO;
+import com.newgo.activity.supermarketapp.data.entities.Product;
+import com.newgo.activity.supermarketapp.data.entities.ProductItem;
+import com.newgo.activity.supermarketapp.presentation.dtos.ProductDTO;
 
-import com.newgo.activity.supermarketapp.dtos.ProductItemDTO;
+import com.newgo.activity.supermarketapp.presentation.dtos.ProductItemDTO;
 import com.newgo.activity.supermarketapp.utils.JwtTokenUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
