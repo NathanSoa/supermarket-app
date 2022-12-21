@@ -71,6 +71,7 @@ public class ProductService {
     @Transactional
     public ProductDTO fullyUpdate(Product entity, Long id) {
         Product databaseProduct = getProductOrThrowException(id);
+        entity.setId(id);
         BeanUtils.copyProperties(entity, databaseProduct);
         return modelMapper.map(productRepository.save(databaseProduct), ProductDTO.class);
     }
