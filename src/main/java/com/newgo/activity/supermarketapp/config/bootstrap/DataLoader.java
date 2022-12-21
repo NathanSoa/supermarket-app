@@ -53,11 +53,11 @@ public class DataLoader implements CommandLineRunner {
     }
     private void loadData() throws IOException {
         Role userRole = new Role();
-        userRole.setRoleName(RoleName.ROLE_USER);
+        userRole.setRoleName(RoleName.USER);
         userRole = roleRepository.save(userRole);
 
         Role adminRole = new Role();
-        adminRole.setRoleName(RoleName.ROLE_ADMINISTRATOR);
+        adminRole.setRoleName(RoleName.ADMINISTRATOR);
         adminRole = roleRepository.save(adminRole);
 
         User user = new User();

@@ -10,6 +10,7 @@ import com.newgo.activity.supermarketapp.data.repository.ProductRepository;
 import com.newgo.activity.supermarketapp.data.repository.UserRepository;
 
 import com.newgo.activity.supermarketapp.utils.BeanCopyNonNullProperty;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.stereotype.Service;
@@ -19,19 +20,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProductItemService {
 
     private final ProductItemRepository productItemRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
-
-    public ProductItemService(ProductItemRepository productItemRepository, UserRepository userRepository, ProductRepository productRepository, ModelMapper modelMapper) {
-        this.productItemRepository = productItemRepository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.modelMapper = modelMapper;
-    }
 
     public List<ProductItemDTO> findAll(String name) {
         User user = userRepository.findByUsername(name).get();

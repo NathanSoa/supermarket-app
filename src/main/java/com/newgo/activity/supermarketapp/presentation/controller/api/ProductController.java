@@ -5,6 +5,7 @@ import com.newgo.activity.supermarketapp.presentation.dtos.ProductDTO;
 import com.newgo.activity.supermarketapp.data.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.domain.service.ProductService;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +16,10 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/product")
+@AllArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {

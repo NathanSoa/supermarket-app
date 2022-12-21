@@ -6,8 +6,7 @@ import com.newgo.activity.supermarketapp.presentation.dtos.ProductDTO;
 import com.newgo.activity.supermarketapp.data.repository.filter.ProductFilter;
 import com.newgo.activity.supermarketapp.data.repository.ProductRepository;
 
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.ObjectUtils;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.BeanUtils;
@@ -19,16 +18,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
-
-
-    public ProductService(ProductRepository productRepository, ModelMapper modelMapper) {
-        this.productRepository = productRepository;
-        this.modelMapper = modelMapper;
-    }
 
     public List<ProductDTO> findAll() {
         return productRepository.findAll()

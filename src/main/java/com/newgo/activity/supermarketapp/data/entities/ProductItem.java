@@ -1,7 +1,12 @@
 package com.newgo.activity.supermarketapp.data.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "product_item")
 public class ProductItem extends BaseEntity {
@@ -13,29 +18,6 @@ public class ProductItem extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     private Integer quantity;
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

@@ -1,13 +1,19 @@
 package com.newgo.activity.supermarketapp.data.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
 @Entity
 public class Role extends BaseEntity implements GrantedAuthority {
 
+    @ToString.Include
     @NotNull
     @Column(unique = true)
     @Enumerated(EnumType.STRING)
@@ -16,18 +22,5 @@ public class Role extends BaseEntity implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return getRoleName().toString();
-    }
-
-    public RoleName getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(RoleName roleName) {
-        this.roleName = roleName;
-    }
-
-    @Override
-    public String toString() {
-        return this.roleName.toString();
     }
 }

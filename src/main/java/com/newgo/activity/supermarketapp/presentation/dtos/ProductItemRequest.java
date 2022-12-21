@@ -1,7 +1,13 @@
 package com.newgo.activity.supermarketapp.presentation.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.NotNull;
 
+
+@Getter
+@Setter
 public class ProductItemRequest {
 
     @NotNull
@@ -9,20 +15,4 @@ public class ProductItemRequest {
 
     @NotNull
     private Integer quantity;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

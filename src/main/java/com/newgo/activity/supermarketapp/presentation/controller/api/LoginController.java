@@ -3,6 +3,7 @@ package com.newgo.activity.supermarketapp.presentation.controller.api;
 import com.newgo.activity.supermarketapp.presentation.dtos.LoginRequest;
 import com.newgo.activity.supermarketapp.presentation.dtos.LoginResponse;
 import com.newgo.activity.supermarketapp.utils.JwtTokenUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,15 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
+@AllArgsConstructor
 public class LoginController {
 
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
-
-    public LoginController(JwtTokenUtils jwtTokenUtils, AuthenticationManager authenticationManager) {
-        this.jwtTokenUtils = jwtTokenUtils;
-        this.authenticationManager = authenticationManager;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> handleLogin(@Valid @RequestBody LoginRequest request) {
