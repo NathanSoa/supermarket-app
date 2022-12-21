@@ -1,6 +1,6 @@
 package com.newgo.activity.supermarketapp.presentation.dtos;
 
-public abstract class IdentifiedDTO {
+public abstract class IdentifiedDTO implements IDTO {
 
     private Long id;
 
