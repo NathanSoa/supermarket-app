@@ -65,26 +65,22 @@ public class ProductItemService {
         return "Product " + productItem.getProduct().getName() + " was added to your list with " + productItem.getQuantity() + " units";
     }
 
-    public ProductItem changeQuantity(String name, ProductItemRequest productItemRequest) {
+    @Transactional
+    public ProductItemDTO changeQuantity(String name, ProductItemRequest productItemRequest) {
         User user = userRepository.findByUsername(name).get();
         Optional<Product> optionalProduct = productRepository.findByName(productItemRequest.getName());
 
         if(!optionalProduct.isPresent())
-            return null;
+            throw new EmptyResultDataAccessException("There's no available product with name " + productItemRequest.getName(), 1);
 
         Optional<ProductItem> optionalProductItem = productItemRepository.findByProductAndUser(optionalProduct.get(), user);
 
         if(!optionalProductItem.isPresent())
-            return null;
+            throw new EmptyResultDataAccessException("There's no product with name " + productItemRequest.getName() + " in your list, you should add it first.", 1);
 
         ProductItem databaseProductItem = optionalProductItem.get();
-
-        ProductItem productItem = new ProductItem();
-        productItem.setQuantity(productItemRequest.getQuantity());
-
-        BeanCopyNonNullProperty.execute(productItem, databaseProductItem);
-
-        return productItemRepository.save(databaseProductItem);
+        updateQuantity(databaseProductItem, productItemRequest.getQuantity());
+        return modelMapper.map(databaseProductItem, ProductItemDTO.class);
     }
 
     public void deleteList(String name) {

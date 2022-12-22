@@ -38,12 +38,10 @@ public class ProductItemController {
         return ResponseEntity.ok(message);
     }
 
-
-    @Transactional
-    @PutMapping("/product")
-    public ResponseEntity<?> changeQuantity(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
-        ProductItem productItem = productItemService.changeQuantity(principal.getName(), productItemRequest);
-        return Objects.isNull(productItem) ? ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
+    @PatchMapping("/product")
+    public ResponseEntity<ProductItemDTO> changeQuantity(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
+        ProductItemDTO productItemDTO = productItemService.changeQuantity(principal.getName(), productItemRequest);
+        return ResponseEntity.ok(productItemDTO);
     }
 
 
