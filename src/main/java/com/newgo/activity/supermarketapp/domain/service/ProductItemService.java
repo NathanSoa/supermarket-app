@@ -8,7 +8,6 @@ import com.newgo.activity.supermarketapp.presentation.dtos.ProductItemRequest;
 import com.newgo.activity.supermarketapp.data.repository.ProductItemRepository;
 import com.newgo.activity.supermarketapp.data.repository.ProductRepository;
 import com.newgo.activity.supermarketapp.data.repository.UserRepository;
-import com.newgo.activity.supermarketapp.utils.BeanCopyNonNullProperty;
 
 import lombok.AllArgsConstructor;
 
@@ -83,20 +82,24 @@ public class ProductItemService {
         return modelMapper.map(databaseProductItem, ProductItemDTO.class);
     }
 
+    @Transactional
     public void deleteList(String name) {
         User user = userRepository.findByUsername(name).get();
 
         productItemRepository.deleteAllByUser(user);
     }
 
-    public void deleteProduct(String name, Long id) {
+    @Transactional
+    public String deleteProduct(String name, Long id) {
         User user = userRepository.findByUsername(name).get();
         Optional<Product> optionalProduct = productRepository.findById(id);
 
         if(!optionalProduct.isPresent())
-            throw new RuntimeException("Cannot found any product with id " + id);
+            throw new EmptyResultDataAccessException("There's no product with name " + name + " in your list to be deleted", 1);
+
 
         productItemRepository.deleteByProductAndUser(optionalProduct.get(), user);
+        return "Product " + optionalProduct.get().getName() + " was deleted from " + name + "'s list";
     }
 
     public ProductItemDTO findByProductIdAndUser(String name, Long id) {
