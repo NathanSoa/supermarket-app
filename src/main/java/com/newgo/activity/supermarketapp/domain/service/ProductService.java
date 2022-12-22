@@ -79,10 +79,6 @@ public class ProductService {
 
     private Product getProductOrThrowException(Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
-
-        if(!productOptional.isPresent())
-            throw new EmptyResultDataAccessException("Cannot find any product with id "  + id, 1);
-
-        return productOptional.get();
+        return productOptional.orElseThrow(() ->  new EmptyResultDataAccessException("Cannot find any product with id "  + id, 1));
     }
 }
