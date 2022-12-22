@@ -33,7 +33,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
     private Predicate[] buildFilter(ProductFilter productFilter, CriteriaBuilder builder, Root<Product> root) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if(descriptionIsNotNull(productFilter))
+        if(descriptionIsNotEmpty(productFilter))
             predicates.add(
                     builder.like(
                             builder.lower(root.get("description")),
@@ -41,7 +41,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
                     )
             );
 
-        if(nameIsNotNull(productFilter))
+        if(nameIsNotEmpty(productFilter))
             predicates.add(
                     builder.like(
                             builder.lower(root.get("name")),
@@ -57,11 +57,11 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         return predicates.toArray(new Predicate[predicates.size()]);
     }
 
-    private boolean descriptionIsNotNull(ProductFilter productFilter) {
+    private boolean descriptionIsNotEmpty(ProductFilter productFilter) {
         return !ObjectUtils.isEmpty(productFilter.getDescription());
     }
 
-    private boolean nameIsNotNull(ProductFilter productFilter) {
+    private boolean nameIsNotEmpty(ProductFilter productFilter) {
         return !ObjectUtils.isEmpty(productFilter.getName());
     }
 

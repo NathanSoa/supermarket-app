@@ -27,7 +27,6 @@ public class ProductController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ProductDTO>> findAll(){
         return ResponseEntity.ok(productService.findAll());
     }
@@ -40,7 +39,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> save(@Valid @RequestBody Product product){
         ProductDTO savedProduct = productService.save(product);
-        return ResponseEntity.ok(savedProduct);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
     @PutMapping("/{id}")

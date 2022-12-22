@@ -1,15 +1,12 @@
 package com.newgo.activity.supermarketapp.presentation.controller.api;
 
-import com.newgo.activity.supermarketapp.data.entities.ProductItem;
 import com.newgo.activity.supermarketapp.presentation.dtos.ProductItemDTO;
 import com.newgo.activity.supermarketapp.presentation.dtos.ProductItemRequest;
 import com.newgo.activity.supermarketapp.domain.service.ProductItemService;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,7 +14,6 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/list")
@@ -32,34 +28,27 @@ public class ProductItemController {
     }
 
 
-    @Transactional
     @PostMapping
-    public ResponseEntity<?> addProduct(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
-        ProductItem productItem = productItemService.addProduct(principal.getName(), productItemRequest);
-        return Objects.isNull(productItem) ? ResponseEntity.badRequest().build() : ResponseEntity.ok(productItem.getProduct().getName() + " was added to your list");
+    public ResponseEntity<String> addProduct(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
+        String message = productItemService.addProduct(principal.getName(), productItemRequest);
+        return ResponseEntity.ok(message);
     }
 
-
-    @Transactional
-    @PutMapping("/product")
-    public ResponseEntity<?> changeQuantity(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
-        ProductItem productItem = productItemService.changeQuantity(principal.getName(), productItemRequest);
-        return Objects.isNull(productItem) ? ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
+    @PatchMapping("/product")
+    public ResponseEntity<ProductItemDTO> changeQuantity(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
+        ProductItemDTO productItemDTO = productItemService.changeQuantity(principal.getName(), productItemRequest);
+        return ResponseEntity.ok(productItemDTO);
     }
 
-
-    @Transactional
     @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteList(Principal principal) {
+    public ResponseEntity<String> deleteList(Principal principal) {
         productItemService.deleteList(principal.getName());
+        return ResponseEntity.ok(principal.getName() + ", your list was deleted!");
     }
 
-
-    @Transactional
     @DeleteMapping("/{id}/product")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(Principal principal, @PathVariable Long id) {
-        productItemService.deleteProduct(principal.getName(), id);
+    public ResponseEntity<String> deleteProduct(Principal principal, @PathVariable Long id) {
+        String message = productItemService.deleteProduct(principal.getName(), id);
+        return ResponseEntity.ok(message);
     }
 }
