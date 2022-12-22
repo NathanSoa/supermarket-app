@@ -32,11 +32,10 @@ public class ProductItemController {
     }
 
 
-    @Transactional
     @PostMapping
-    public ResponseEntity<?> addProduct(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
-        ProductItem productItem = productItemService.addProduct(principal.getName(), productItemRequest);
-        return Objects.isNull(productItem) ? ResponseEntity.badRequest().build() : ResponseEntity.ok(productItem.getProduct().getName() + " was added to your list");
+    public ResponseEntity<String> addProduct(Principal principal, @Valid @RequestBody ProductItemRequest productItemRequest) {
+        String message = productItemService.addProduct(principal.getName(), productItemRequest);
+        return ResponseEntity.ok(message);
     }
 
 

@@ -8,12 +8,15 @@ import com.newgo.activity.supermarketapp.presentation.dtos.ProductItemRequest;
 import com.newgo.activity.supermarketapp.data.repository.ProductItemRepository;
 import com.newgo.activity.supermarketapp.data.repository.ProductRepository;
 import com.newgo.activity.supermarketapp.data.repository.UserRepository;
-
 import com.newgo.activity.supermarketapp.utils.BeanCopyNonNullProperty;
+
 import lombok.AllArgsConstructor;
+
 import org.modelmapper.ModelMapper;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,15 +42,19 @@ public class ProductItemService {
                 .collect(Collectors.toList());
     }
 
-    public ProductItem addProduct(String name, ProductItemRequest productItemRequest) {
+
+    @Transactional
+    public String addProduct(String name, ProductItemRequest productItemRequest) {
         User user = userRepository.findByUsername(name).get();
         Optional<Product> optionalProduct = productRepository.findByName(productItemRequest.getName());
 
         if(!optionalProduct.isPresent())
-            return null;
+            throw new EmptyResultDataAccessException("There's no available product with name " + productItemRequest.getName(), 1);
 
         if(itemAlreadyInList(user, optionalProduct.get())) {
-            return null;
+            ProductItem databaseProduct = productItemRepository.findByProductAndUser(optionalProduct.get(), user).get();
+            updateQuantity(databaseProduct, databaseProduct.getQuantity() + 1);
+            return "Added one more unit of " + databaseProduct.getProduct().getName() + " to your list";
         }
 
         ProductItem productItem = new ProductItem();
@@ -55,7 +62,7 @@ public class ProductItemService {
         productItem.setUser(user);
         productItem.setQuantity(productItemRequest.getQuantity());
 
-        return productItemRepository.save(productItem);
+        return "Product " + productItem.getProduct().getName() + " was added to your list with " + productItem.getQuantity() + " units";
     }
 
     public ProductItem changeQuantity(String name, ProductItemRequest productItemRequest) {
@@ -114,5 +121,11 @@ public class ProductItemService {
 
     private boolean itemAlreadyInList(User user, Product product) {
         return productItemRepository.findByProductAndUser(product, user).isPresent();
+    }
+
+    private void updateQuantity(ProductItem databaseProductItem, Integer newQuantity) {
+        ProductItem updatedProductItem = modelMapper.map(databaseProductItem, ProductItem.class);
+        updatedProductItem.setQuantity(newQuantity);
+        productItemRepository.save(updatedProductItem);
     }
 }
